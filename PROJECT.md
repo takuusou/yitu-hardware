@@ -49,8 +49,8 @@ Node.js 22；npm ci、npm run dev。发布检查为 npm run lint、npm run build
 
 ## 剩余发布工作
 
-1. [公开 GitHub 仓库](https://github.com/takuusou/yitu-hardware)已存在。源码清单为 58 个跟踪文件；必须以 main 的完整文件树和逐文件 blob SHA 核对结果确认备份完成，上传对象本身不算完成。
-2. [Notion 项目档案](https://app.notion.com/p/3f915452b84481d981b8d39ed184faa1?pvs=204)已存在；更新真实检查结果，公开访问仍未确认。
+1. [公开 GitHub 仓库](https://github.com/takuusou/yitu-hardware)的 main 已包含全部 58 个跟踪文件，逐文件路径与 blob SHA 核对一致。从 GitHub 全新克隆后 npm ci 和 npm run build 通过。
+2. [Notion 作品页](https://app.notion.com/p/3f915452b84481d981b8d39ed184faa1?pvs=204)已参照 Huh Cat 整理为设计、交互、作者职责与项目经验；已读回确认，公开访问仍未确认。GitHub 与 Notion 用于上传与展示项目，Cloudflare 由用户自行处理，不在作品页编写部署教程。
 3. 本轮基础回归涵盖 Hero、中英文切换、三种尺寸的标题与溢出、图片、表单标签、菜单 Escape 和工艺 04 下滚；全流程键盘、3D 失败重试及后台暂停恢复仍需专项验收。
 4. 用户准备域名和 Cloudflare 后发布 pages.dev 预览；更新两个域名字段，再绑定正式域名。
 5. 真机、海外网络、GPU/帧率和实际邮箱/附件发送完成上线验收。
