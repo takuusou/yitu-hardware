@@ -1,47 +1,49 @@
 # YITU Hardware · 怡途五金
 
-![YITU Hardware brand visual](public/og-image.jpg)
+A bilingual website for a precision CNC machining business, combining industrial visuals, interactive 3D and a clear journey from services to inquiry.
 
-A bilingual website for a precision CNC machining business, combining an industrial visual identity, an interactive 3D Hero and clear presentation of services, processes and capabilities.
+面向海外客户的中英文精密制造企业网站。项目围绕精密 CNC 加工业务，将行业应用、加工工艺、企业能力、合作保障与联系询价组织为完整的单页体验。
 
-面向精密 CNC 加工企业的中英文网站设计与开发项目。以克制的留白、金属质感和清晰的信息层级，展示行业应用、工艺、加工能力、合作保障与联系渠道。
+## 项目目标
 
-## Design and interaction
+让初次接触怡途的客户能够了解企业能做什么、如何开展加工与合作，以及怎样进一步联系。通过清晰的信息结构与克制的工业视觉，将企业资料转化为易于浏览的网页内容。
 
-- Interactive Spline Hero on desktop; a clean static background on mobile.
-- Bottom-aligned Hero copy with a scroll-driven upward mask.
-- Craft steps with synchronized click / scroll selection and soft image crossfades.
-- Chinese / English switching and responsive navigation.
-- Contact information, WeChat and a quote form that opens the customer's email draft for adding drawings and sending.
-- Local fonts and images; static HTML, CSS and JavaScript output.
+## 内容与体验
 
-## Role and process
+- **品牌与首页**：金属质感的 3D 场景配合简洁文案，标题与描述靠近底部，为视觉主体留出空间。
+- **行业应用**：展示新能源、医疗器械、机器人与无人机等业务场景。
+- **工艺与能力**：介绍原材料、精密加工、尺寸检验、表面处理及加工能力；工艺步骤支持点击和滚动切换。
+- **合作与企业介绍**：呈现图纸保密、质量把控、交期管理与企业经历。
+- **联系与询价**：提供电话、邮箱、微信和询价表单；表单打开客户邮箱草稿，由客户添加图纸并发送。
+- **双语与响应式**：中英文使用一致的信息结构，桌面保留 3D 交互，手机采用静态背景并适配导航、标题与表单。
 
-The project owner led business requirements, content decisions and visual direction, collaborating with AI on frontend implementation, motion adjustments, responsive layouts and debugging.
+## 设计与实现
 
-作者主导业务需求、内容取舍与视觉方向，与 AI 协作完成前端实现。项目经验包括根据观看反馈调整动画、为手机选择静态背景，以及同步检查中英文版式。
+项目以留白、金属质感、明暗区块和字体层级建立专业、清晰的视觉语言。滚动动效配合内容阅读，工艺图片采用柔和交叉淡入，并让点击选择与滚动位置保持同步。
 
-[项目经验 · Notion](https://app.notion.com/p/3f915452b84481d981b8d39ed184faa1?pvs=204)
+作者主导业务需求、内容取舍与视觉方向，与 AI 协作完成前端实现、动画调整、响应式适配和问题排查。项目经验包括将业务语言转化为页面要求、根据观看反馈调整动画，以及结合实际内容检查中英文和移动端表现。
 
-## Stack
+[完整项目介绍与经验 · Notion](https://app.notion.com/p/3f915452b84481d981b8d39ed184faa1?pvs=204)
 
-Next.js 16 · React 19 · TypeScript · Tailwind CSS 4 · GSAP · Spline · Zustand.
+## 技术
 
-## Run locally
+Next.js 16 · React 19 · TypeScript · Tailwind CSS 4 · GSAP · Spline · Zustand。
 
-Use a current Node.js 22 release (at least 22.22.2).
+图片与字体使用本地资源，网站支持静态导出。仓库包含完整源码、资源、配置和依赖锁文件。
+
+## 本地运行
+
+使用当前 Node.js 22 版本（至少 22.22.2）。
 
 ```bash
 npm ci
 npm run dev
 ```
 
-Checks: `npm run lint`, `npm run build`, `npm run typecheck`. Static output: `out/`.
+检查命令：`npm run lint`、`npm run build`、`npm run typecheck`。静态构建输出为 `out/`。
 
-Source, public assets, configuration and package-lock.json belong in this repository. node_modules, .next and out are generated locally.
+## 项目状态
 
-## Project notes
+中英文页面、响应式布局与主要交互已完成。桌面、375px 和 768px 基础浏览器检查，以及 lint、类型检查和构建检查通过；已验证从 GitHub 全新克隆后安装与构建。真机及其他使用环境仍需进一步验收，正式在线地址待补充。
 
-Desktop, 375px and 768px Chinese / English browser smoke checks pass, along with lint, build and typecheck. Installation and build from a clean temporary source directory also pass. Real-device testing remains pending. There is no published site URL yet.
-
-Brand assets and company copy belong to their respective owners. Third-party dependency, font and asset licenses remain applicable. No project-wide open-source license has been selected.
+品牌、企业文案及第三方素材的权利归相应权利人所有。第三方依赖、字体与资源遵循各自许可；仓库尚未设置项目整体的开源许可证。
