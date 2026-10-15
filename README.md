@@ -1,88 +1,47 @@
 # YITU Hardware · 怡途五金
 
-![YITU Hardware brand preview](public/og-image.jpg)
+![YITU Hardware brand visual](public/og-image.jpg)
 
-A bilingual precision-manufacturing website built with Next.js, React, TypeScript, Spline and GSAP. Static HTML, CSS and JavaScript are generated for Cloudflare Pages. No application server, database or upload service is required.
+A bilingual website for a precision CNC machining business, combining an industrial visual identity, an interactive 3D Hero and clear presentation of services, processes and capabilities.
 
-中英文精密 CNC 企业展示网站，展示服务行业、工艺和合作流程，让客户通过自己的邮箱发送询价。项目由用户主导业务、内容和设计决策，与 AI 协作开发。
+面向精密 CNC 加工企业的中英文网站设计与开发项目。以克制的留白、金属质感和清晰的信息层级，展示行业应用、工艺、加工能力、合作保障与联系渠道。
 
-**Status:** static build, TypeScript and ESLint checks pass. Cloudflare production hosting and the new domain are not configured yet. Latest browser regression remains pending; see [verification notes](PRELAUNCH-REVIEW.md).
+## Design and interaction
 
-## Features
+- Interactive Spline Hero on desktop; a clean static background on mobile.
+- Bottom-aligned Hero copy with a scroll-driven upward mask.
+- Craft steps with synchronized click / scroll selection and soft image crossfades.
+- Chinese / English switching and responsive navigation.
+- Contact information, WeChat and a quote form that opens the customer's email draft for adding drawings and sending.
+- Local fonts and images; static HTML, CSS and JavaScript output.
 
-- Desktop Spline Hero; small screens and reduced-motion mode use an image.
-- Scroll-driven upward text mask. 3D pauses offscreen and when the document is hidden.
-- Responsive GSAP introduction and local WebP industry images.
-- Craft steps share click/scroll position and use crossfades without blur.
-- Keyboard-accessible mobile menu and capability accordion.
-- Chinese / English switching with Zustand; defaults to Chinese, without refresh persistence.
-- Quote form opens a mailto draft. Customers attach drawings and send the email themselves.
-- Local fonts, Open Graph image and Twitter large-image metadata.
+## Role and process
+
+The project owner led business requirements, content decisions and visual direction, collaborating with AI on frontend implementation, motion adjustments, responsive layouts and debugging.
+
+作者主导业务需求、内容取舍与视觉方向，与 AI 协作完成前端实现。项目经验包括根据观看反馈调整动画、为手机选择静态背景，以及同步检查中英文版式。
+
+[项目经验 · Notion](https://app.notion.com/p/3f915452b84481d981b8d39ed184faa1?pvs=204)
 
 ## Stack
 
-| Area | Technology |
-| --- | --- |
-| Application | Next.js 16 App Router, React 19, TypeScript |
-| Styling | CSS, inline component styles, Tailwind CSS 4 |
-| Motion | GSAP / ScrollTrigger, CSS transitions |
-| 3D | Spline React integration and runtime |
-| Language | Zustand |
-| Fonts | Noto Serif SC, Noto Sans SC, Fraunces, JetBrains Mono via installed Fontsource packages |
-| Hosting | Next.js static export for Cloudflare Pages |
+Next.js 16 · React 19 · TypeScript · Tailwind CSS 4 · GSAP · Spline · Zustand.
 
-## Local development
+## Run locally
 
-Use Node.js 22. The release was built with Node.js 22.22.1; package-lock.json records the dependencies.
+Use a current Node.js 22 release (at least 22.22.2).
 
 ```bash
 npm ci
 npm run dev
 ```
 
-Open http://localhost:3000. If occupied, use `npm run dev -- --port 3002`.
+Checks: `npm run lint`, `npm run build`, `npm run typecheck`. Static output: `out/`.
 
-## Checks and build
+Source, public assets, configuration and package-lock.json belong in this repository. node_modules, .next and out are generated locally.
 
-```bash
-npm run lint
-npm run build
-npm run typecheck
-```
+## Project notes
 
-Build output is `out/`. An optional static preview is:
+Desktop, 375px and 768px Chinese / English browser smoke checks pass, along with lint, build and typecheck. Installation and build from a clean temporary source directory also pass. Real-device testing remains pending. There is no published site URL yet.
 
-```bash
-python3 -m http.server 3001 --bind 127.0.0.1 --directory out
-```
-
-Open http://127.0.0.1:3001 and stop with Ctrl+C. Python is a local preview tool, not a website dependency. There is no Node-server `npm start` command for this static site.
-
-## Structure
-
-```text
-src/app/                  Page, metadata and global styles
-src/components/layout/    Header and footer
-src/components/sections/  Hero, industries, craft and contact
-src/components/ui/        Shared headings and language text
-src/hooks/                Language state and reveal observer
-public/                   Brand, photos, OG and local assets
-next.config.ts            Static-export configuration
-eslint.config.mjs         Next.js and TypeScript lint configuration
-```
-
-Commit source, public, configuration, lock file and documentation. Do not commit node_modules, .next, out, environment files, caches or credentials; .gitignore covers these. `private: true` in package.json prevents accidental npm publication and does not make GitHub private.
-
-## Documentation
-
-- [Cloudflare deployment](DEPLOYMENT.md)
-- [Project goals and AI handoff](PROJECT.md)
-- [Release verification](PRELAUNCH-REVIEW.md)
-
-Before using a new domain, replace metadataBase and openGraph.url in src/app/layout.tsx. Their current value is the previously provided address, not evidence of a live deployment. The application requires no business environment variables or secrets.
-
-## External resources and rights
-
-The desktop scene loads from prod.spline.design. Hosting the page does not guarantee Spline availability or WebGL performance on every device. Fonts and images are local. Scene-load failure shows an image, a visible error and a retry button.
-
-Brand assets and company copy belong to this project. Public visibility is not a blanket license to reuse trademarks or third-party assets. Dependency/font licenses remain those of their packages; no project-wide open-source license has been selected.
+Brand assets and company copy belong to their respective owners. Third-party dependency, font and asset licenses remain applicable. No project-wide open-source license has been selected.
