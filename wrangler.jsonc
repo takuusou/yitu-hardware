@@ -1,5 +1,6 @@
 {
   "name": "yitu-hardware",
+  "account_id": "f008b82d29d96a5f69be2016dc2b44db",
   "compatibility_date": "2026-10-17",
   "assets": {
     "directory": "./out",
