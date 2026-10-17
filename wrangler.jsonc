@@ -6,5 +6,6 @@
     "directory": "./out",
     "not_found_handling": "404-page"
   },
-  "workers_dev": true
+  "workers_dev": true,
+  "routes": [{ "pattern": "yituhardware.com", "custom_domain": true }]
 }
