@@ -37,6 +37,9 @@
 - OG 图片为 1200×630 JPEG、12,598 字节，OG/Twitter 字段补齐。
 - GSAP 响应式生命周期，移除飞图 blur，离屏跳过图片重叠检测，减少动态效果模式使用静态表现。
 - lint、TypeScript 和静态构建通过。
+- 手机 Hero 背景已用 imagegen 去掉烘焙的旧 Logo 和全部文字，保留金属构图；真实标题、描述及向下提示未改。资源为 public/hero-mobile.webp，832×1799、63,232 字节。
+- 本轮重新运行 lint、build、typecheck，通过；375px、768px、1440px 中英文基础浏览器回归通过，未发现横向溢出、标题越界和破损图片。
+- 临时干净源码目录按锁文件 npm ci 后构建通过；Node 22.22.1 有现有 mute-stream 间接依赖的 engine 警告，建议使用 22.22.2 或更新的 22 版本。
 
 ## 工程地图
 
@@ -46,9 +49,9 @@ Node.js 22；npm ci、npm run dev。发布检查为 npm run lint、npm run build
 
 ## 剩余发布工作
 
-1. 创建新公开 GitHub 仓库并验证文件上传完整性。
-2. 新建 Notion 项目档案，保存实际仓库和发布链接。
-3. 最新静态包的桌面/手机浏览器回归与截图。当前浏览器自动审批受额度限制，不能把旧截图当成最新验收。
+1. [公开 GitHub 仓库](https://github.com/takuusou/yitu-hardware)的 main 已包含全部 58 个跟踪文件，逐文件路径与 blob SHA 核对一致。从 GitHub 全新克隆后 npm ci 和 npm run build 通过。
+2. [Notion 作品页](https://app.notion.com/p/3f915452b84481d981b8d39ed184faa1?pvs=204)已参照 Huh Cat 整理为设计、交互、作者职责与项目经验；已读回确认，公开访问仍未确认。GitHub 与 Notion 用于上传与展示项目，Cloudflare 由用户自行处理，不在作品页编写部署教程。
+3. 本轮基础回归涵盖 Hero、中英文切换、三种尺寸的标题与溢出、图片、表单标签、菜单 Escape 和工艺 04 下滚；全流程键盘、3D 失败重试及后台暂停恢复仍需专项验收。
 4. 用户准备域名和 Cloudflare 后发布 pages.dev 预览；更新两个域名字段，再绑定正式域名。
 5. 真机、海外网络、GPU/帧率和实际邮箱/附件发送完成上线验收。
 

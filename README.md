@@ -1,88 +1,68 @@
 # YITU Hardware · 怡途五金
 
-![YITU Hardware brand preview](public/og-image.jpg)
+A bilingual website for a precision CNC machining business, combining industrial visuals, interactive 3D and a clear journey from services to inquiry.
 
-A bilingual precision-manufacturing website built with Next.js, React, TypeScript, Spline and GSAP. Static HTML, CSS and JavaScript are generated for Cloudflare Pages. No application server, database or upload service is required.
+面向海外客户的中英文精密制造企业网站。项目围绕精密 CNC 加工业务，将行业应用、加工工艺、企业能力、合作保障与联系询价组织为完整的单页体验。
 
-中英文精密 CNC 企业展示网站，展示服务行业、工艺和合作流程，让客户通过自己的邮箱发送询价。项目由用户主导业务、内容和设计决策，与 AI 协作开发。
+## 项目目标
 
-**Status:** static build, TypeScript and ESLint checks pass. Cloudflare production hosting and the new domain are not configured yet. Latest browser regression remains pending; see [verification notes](PRELAUNCH-REVIEW.md).
+让初次接触怡途的客户能够了解企业能做什么、如何开展加工与合作，以及怎样进一步联系。通过清晰的信息结构与克制的工业视觉，将企业资料转化为易于浏览的网页内容。
 
-## Features
+## 网站结构
 
-- Desktop Spline Hero; small screens and reduced-motion mode use an image.
-- Scroll-driven upward text mask. 3D pauses offscreen and when the document is hidden.
-- Responsive GSAP introduction and local WebP industry images.
-- Craft steps share click/scroll position and use crossfades without blur.
-- Keyboard-accessible mobile menu and capability accordion.
-- Chinese / English switching with Zustand; defaults to Chinese, without refresh persistence.
-- Quote form opens a mailto draft. Customers attach drawings and send the email themselves.
-- Local fonts, Open Graph image and Twitter large-image metadata.
+网站采用单页结构，顶部导航可跳转至主要区块。浏览顺序围绕“认识企业 → 判断业务匹配 → 了解合作方式 → 联系询价”展开。
 
-## Stack
+| 顺序 | 区块 | 内容与作用 |
+| --- | --- | --- |
+| 1 | 首页 Hero | 3D 金属主体、品牌标题与描述，建立第一印象并引导继续浏览。 |
+| 2 | 品牌介绍 | 介绍专注的业务方向与制造经历，承接首页展示。 |
+| 3 | 服务领域 | 新能源、医疗器械、机器人与无人机应用，帮助客户判断行业适配。 |
+| 4 | 工艺流程 | 原材料管控、精密加工、尺寸检验、表面处理，说明零件的加工流程。 |
+| 5 | 加工能力 | 尺寸精度、表面粗糙度、同轴度与圆度、加工范围，为图纸沟通提供依据。 |
+| 6 | 合作保障 | 图纸保密、质量把控与交期管理，回应合作前的关键顾虑。 |
+| 7 | 公司介绍 | 企业经历、创办人与运作方式，让业务介绍对应到具体企业与负责人。 |
+| 8 | 联系与询价 | 电话、邮箱、微信与询价表单，将浏览引向具体需求沟通。 |
+| 9 | 页脚 | 汇总导航、联系方式与版权信息，方便再次查找。 |
 
-| Area | Technology |
-| --- | --- |
-| Application | Next.js 16 App Router, React 19, TypeScript |
-| Styling | CSS, inline component styles, Tailwind CSS 4 |
-| Motion | GSAP / ScrollTrigger, CSS transitions |
-| 3D | Spline React integration and runtime |
-| Language | Zustand |
-| Fonts | Noto Serif SC, Noto Sans SC, Fraunces, JetBrains Mono via installed Fontsource packages |
-| Hosting | Next.js static export for Cloudflare Pages |
+中英文共享信息结构，桌面保留 3D 交互，手机采用静态背景并适配导航、标题与表单。询价表单整理公司、材料、数量等信息后打开客户邮箱草稿，由客户添加图纸并发送。
 
-## Local development
+## 对实体制造与跨境业务的价值
 
-Use Node.js 22. The release was built with Node.js 22.22.1; package-lock.json records the dependencies.
+- **呈现实体能力**：把分散在工艺、人员与日常介绍中的企业信息整理为可浏览的资料，让尚未到访工厂的客户建立初步认识。
+- **提高沟通针对性**：客户先了解行业与能力，再带着材料、数量和图纸要求联系，有助于减少重复介绍，把讨论集中到加工、报价与交期。
+- **支持线下销售**：网站可作为展会、名片、业务邮件和客户转介绍中的统一入口，保持不同渠道的企业介绍一致。
+- **方便海外客户筛选**：英文内容支持海外采购与工程人员自行了解、转发和讨论企业资料，减少基础信息的语言障碍。
+- **衔接时差与询价**：客户可按自己的工作时间阅读，通过邮箱补充需求与图纸，再由双方人工确认工艺、报价和订单。
+
+这些是网站的业务设计目标，实际询盘与合作效果需要在使用中观察。
+
+## 设计与实现
+
+项目以留白、金属质感、明暗区块和字体层级建立专业、清晰的视觉语言。滚动动效配合内容阅读，工艺图片采用柔和交叉淡入，并让点击选择与滚动位置保持同步。
+
+作者主导业务需求、内容取舍与视觉方向，与 AI 协作完成前端实现、动画调整、响应式适配和问题排查。项目经验包括将业务语言转化为页面要求、根据观看反馈调整动画，以及结合实际内容检查中英文和移动端表现。
+
+[完整项目介绍与经验 · Notion](https://app.notion.com/p/3f915452b84481d981b8d39ed184faa1?pvs=204)
+
+## 技术
+
+Next.js 16 · React 19 · TypeScript · Tailwind CSS 4 · GSAP · Spline · Zustand。
+
+图片与字体使用本地资源，网站支持静态导出。仓库包含完整源码、资源、配置和依赖锁文件。
+
+## 本地运行
+
+使用当前 Node.js 22 版本（至少 22.22.2）。
 
 ```bash
 npm ci
 npm run dev
 ```
 
-Open http://localhost:3000. If occupied, use `npm run dev -- --port 3002`.
+检查命令：`npm run lint`、`npm run build`、`npm run typecheck`。静态构建输出为 `out/`。
 
-## Checks and build
+## 项目状态
 
-```bash
-npm run lint
-npm run build
-npm run typecheck
-```
+中英文页面、响应式布局与主要交互已完成。桌面、375px 和 768px 基础浏览器检查，以及 lint、类型检查和构建检查通过；已验证从 GitHub 全新克隆后安装与构建。真机及其他使用环境仍需进一步验收，正式在线地址待补充。
 
-Build output is `out/`. An optional static preview is:
-
-```bash
-python3 -m http.server 3001 --bind 127.0.0.1 --directory out
-```
-
-Open http://127.0.0.1:3001 and stop with Ctrl+C. Python is a local preview tool, not a website dependency. There is no Node-server `npm start` command for this static site.
-
-## Structure
-
-```text
-src/app/                  Page, metadata and global styles
-src/components/layout/    Header and footer
-src/components/sections/  Hero, industries, craft and contact
-src/components/ui/        Shared headings and language text
-src/hooks/                Language state and reveal observer
-public/                   Brand, photos, OG and local assets
-next.config.ts            Static-export configuration
-eslint.config.mjs         Next.js and TypeScript lint configuration
-```
-
-Commit source, public, configuration, lock file and documentation. Do not commit node_modules, .next, out, environment files, caches or credentials; .gitignore covers these. `private: true` in package.json prevents accidental npm publication and does not make GitHub private.
-
-## Documentation
-
-- [Cloudflare deployment](DEPLOYMENT.md)
-- [Project goals and AI handoff](PROJECT.md)
-- [Release verification](PRELAUNCH-REVIEW.md)
-
-Before using a new domain, replace metadataBase and openGraph.url in src/app/layout.tsx. Their current value is the previously provided address, not evidence of a live deployment. The application requires no business environment variables or secrets.
-
-## External resources and rights
-
-The desktop scene loads from prod.spline.design. Hosting the page does not guarantee Spline availability or WebGL performance on every device. Fonts and images are local. Scene-load failure shows an image, a visible error and a retry button.
-
-Brand assets and company copy belong to this project. Public visibility is not a blanket license to reuse trademarks or third-party assets. Dependency/font licenses remain those of their packages; no project-wide open-source license has been selected.
+品牌、企业文案及第三方素材的权利归相应权利人所有。第三方依赖、字体与资源遵循各自许可；仓库尚未设置项目整体的开源许可证。
