@@ -9,7 +9,7 @@ import { InertiaPlugin } from 'gsap/InertiaPlugin'
 
 gsap.registerPlugin(ScrollTrigger, Draggable, InertiaPlugin)
 
-const SECONDS_PER_IMAGE = 2
+const SECONDS_PER_IMAGE = 4
 const PHOTO_HEIGHT = 190
 const PHOTO_GAP = 8
 
@@ -142,14 +142,21 @@ export default function AboutIntroSection() {
         inViewport = entry.isIntersecting && entry.intersectionRatio > 0
         updateVisibility()
       }, { threshold: 0.001 })
+      let lastWidth = window.innerWidth
+      let resizeTimer: ReturnType<typeof setTimeout> | undefined
       const onResize = () => {
-        if (loop.draggable.isPressed) loop.draggable.endDrag(loop.draggable.pointerEvent)
-        loop.draggable.tween?.kill()
-        gsap.killTweensOf(loop.timeline)
-        loop.timeline.pause()
-        loop.refresh()
-        loop.draggable.update()
-        resume()
+        if (window.innerWidth === lastWidth) return
+        lastWidth = window.innerWidth
+        clearTimeout(resizeTimer)
+        resizeTimer = setTimeout(() => {
+          if (loop.draggable.isPressed) loop.draggable.endDrag(loop.draggable.pointerEvent)
+          loop.draggable.tween?.kill()
+          gsap.killTweensOf(loop.timeline)
+          loop.timeline.pause()
+          loop.refresh()
+          loop.draggable.update()
+          resume()
+        }, 150)
       }
       const onMotionChange = () => {
         loop.draggable.tween?.kill()
@@ -165,6 +172,7 @@ export default function AboutIntroSection() {
         observer.disconnect()
         document.removeEventListener('visibilitychange', updateVisibility)
         window.removeEventListener('resize', onResize)
+        clearTimeout(resizeTimer)
         reducedMotion.removeEventListener('change', onMotionChange)
         loop.draggable.tween?.kill()
         loop.draggable.kill()
