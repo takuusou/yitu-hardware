@@ -4,6 +4,8 @@ A bilingual website for a precision CNC machining business, combining industrial
 
 面向海外客户的中英文精密制造企业网站。项目围绕精密 CNC 加工业务，将行业应用、加工工艺、企业能力、合作保障与联系询价组织为完整的单页体验。
 
+正式网址：[https://yituhardware.com](https://yituhardware.com)，于 2026-10-17 上线。
+
 ## 项目目标
 
 让初次接触怡途的客户能够了解企业能做什么、如何开展加工与合作，以及怎样进一步联系。通过清晰的信息结构与克制的工业视觉，将企业资料转化为易于浏览的网页内容。
@@ -24,7 +26,7 @@ A bilingual website for a precision CNC machining business, combining industrial
 | 8 | 联系与询价 | 电话、邮箱、微信与询价表单，将浏览引向具体需求沟通。 |
 | 9 | 页脚 | 汇总导航、联系方式与版权信息，方便再次查找。 |
 
-中英文共享信息结构，桌面保留 3D 交互，手机采用静态背景并适配导航、标题与表单。询价表单整理公司、材料、数量等信息后打开客户邮箱草稿，由客户添加图纸并发送。
+中英文共享信息结构，3D 只在桌面端加载；手机端首页目前显示静态背景 `hero-mobile.webp`，手机端适配是下一项待办。询价表单整理公司、材料、数量等信息后打开客户邮箱草稿，由客户添加图纸并发送。
 
 ## 对实体制造与跨境业务的价值
 
@@ -61,8 +63,18 @@ npm run dev
 
 检查命令：`npm run lint`、`npm run build`、`npm run typecheck`。静态构建输出为 `out/`。
 
+## 部署
+
+网站通过 Cloudflare Workers 静态资源托管，配置见 `wrangler.jsonc`。完成 Wrangler 登录并确认部署账号后，执行 `npm run deploy`，该命令先构建，再发布 `out/`。
+
+主域名通过 Worker custom domain 绑定；`www.yituhardware.com` 以 301 跳转到主域名并保留路径和查询参数。已开启 Always Use HTTPS，workers.dev 预览地址已关闭。DNS 由 Cloudflare 托管；原阿里云服务器（Nginx + PM2）已停用，原部署方式作废。
+
+完整操作、验证和回滚方法见 [部署手册](DEPLOYMENT.md)。
+
 ## 项目状态
 
-中英文页面、响应式布局与主要交互已完成。桌面、375px 和 768px 基础浏览器检查，以及 lint、类型检查和构建检查通过；已验证从 GitHub 全新克隆后安装与构建。真机及其他使用环境仍需进一步验收，正式在线地址待补充。
+网站已正式上线。此前完成桌面、375px 和 768px 基础浏览器检查，以及 lint、类型检查、构建和从 GitHub 全新克隆后的安装与构建检查；这些记录不代表手机端适配已完成，真机及其他使用环境仍需进一步验收。
+
+域名注册商转移于 2026-10-17 从阿里云提交至 Cloudflare Registrar，预计 2026-10-22 至 2026-10-24 完成，目前等待确认。2026-10-18 已将 GitHub 原有文档历史合并进 main，合并提交为 `bdf56f9`。下一项开发待办是手机端适配。
 
 品牌、企业文案及第三方素材的权利归相应权利人所有。第三方依赖、字体与资源遵循各自许可；仓库尚未设置项目整体的开源许可证。

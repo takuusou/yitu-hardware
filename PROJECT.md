@@ -1,12 +1,12 @@
 # 怡途五金项目档案与 AI 交接
 
-记录日期：2026-10-14。以当前源码和实际验证为准，不把历史讨论中的“应该完成”当作完成事实。
+更新日期：2026-10-18；保留此前开发检查记录。以当前源码和实际验证为准，不把历史讨论中的“应该完成”当作完成事实。
 
 ## 目标
 
 建立克制、清晰、有工业质感的中英文企业网站，向海外客户展示精密 CNC 加工、行业应用、工艺及合作保障。同时作为用户主导、与 AI 协作完成的实际项目作品，在 GitHub 公开展示，在 Notion 记录决策与进度。
 
-最新方案为 Cloudflare Pages 静态托管。用户安排 Cloudflare 登录并注册新域名，不继续原服务器部署流程。
+网站已于 2026-10-17 上线至 [https://yituhardware.com](https://yituhardware.com)，使用 Cloudflare Workers 静态资源托管。原阿里云服务器（Nginx + PM2）已停用，原部署方式作废。
 
 ## 产品结构与决定
 
@@ -38,22 +38,31 @@
 - GSAP 响应式生命周期，移除飞图 blur，离屏跳过图片重叠检测，减少动态效果模式使用静态表现。
 - lint、TypeScript 和静态构建通过。
 - 手机 Hero 背景已用 imagegen 去掉烘焙的旧 Logo 和全部文字，保留金属构图；真实标题、描述及向下提示未改。资源为 public/hero-mobile.webp，832×1799、63,232 字节。
-- 本轮重新运行 lint、build、typecheck，通过；375px、768px、1440px 中英文基础浏览器回归通过，未发现横向溢出、标题越界和破损图片。
+- 此前运行 lint、build、typecheck，通过；375px、768px、1440px 中英文基础浏览器回归通过，未发现横向溢出、标题越界和破损图片。这些检查不代表手机端适配已完成。
 - 临时干净源码目录按锁文件 npm ci 后构建通过；Node 22.22.1 有现有 mute-stream 间接依赖的 engine 警告，建议使用 22.22.2 或更新的 22 版本。
 
 ## 工程地图
 
 阅读 README、PRELAUNCH-REVIEW 和 DEPLOYMENT。组合在 src/app/page.tsx，metadata 在 layout.tsx，区块在 src/components/sections，导航和页脚在 layout，语言源在各组件和 src/hooks/useLang.ts。
 
-Node.js 22；npm ci、npm run dev。发布检查为 npm run lint、npm run build、npm run typecheck。Cloudflare 上传 out；GitHub 保存源码、资源、锁文件和文档，不保存构建缓存。
+Node.js 22；npm ci、npm run dev。发布检查为 npm run lint、npm run build、npm run typecheck。Cloudflare Workers 配置见 wrangler.jsonc，npm run deploy 构建并发布 out/；GitHub 保存源码、资源、锁文件和文档，不保存构建缓存。
 
-## 剩余发布工作
+## 2026-10-17 至 2026-10-18 进展
 
-1. [公开 GitHub 仓库](https://github.com/takuusou/yitu-hardware)的 main 已包含全部 58 个跟踪文件，逐文件路径与 blob SHA 核对一致。从 GitHub 全新克隆后 npm ci 和 npm run build 通过。
+- 从已停用的阿里云服务器部署方式迁移到 Cloudflare Workers 静态资源托管，正式网址于 2026-10-17 上线；主域名通过 Worker custom domain 绑定。
+- DNS 由 Cloudflare 托管。已开启 Always Use HTTPS，www 通过 Cloudflare 重定向规则以 301 跳转到 HTTPS 主域名，并保留路径和查询参数；workers.dev 预览地址已关闭。
+- 域名注册商从阿里云转移到 Cloudflare Registrar，于 2026-10-17 提交，预计 2026-10-22 至 2026-10-24 完成，目前仍待确认。
+- 2026-10-18 将 GitHub 原有文档历史与本地部署历史合并进 main。两段历史不相关，合并提交为 bdf56f9；冲突保留本地版本，合并后的文件树与线上部署来源完全一致，未通过此次合并重新部署。
+- 手机端首页目前使用 public/hero-mobile.webp 静态背景，3D 只在桌面端加载；手机端适配是下一项开发待办。
+- 本机代理可能使普通 UDP DNS 查询返回 198.18.x.x 假地址；核对 DNS 使用 DoH 或 TCP，不能据此判定公网解析故障。
+
+## 当前待办与验收边界
+
+1. 等待注册商转移完成，预计窗口为 2026-10-22 至 2026-10-24；完成后确认注册商状态。
 2. [Notion 作品页](https://app.notion.com/p/3f915452b84481d981b8d39ed184faa1?pvs=204)已参照 Huh Cat 整理为设计、交互、作者职责与项目经验；已读回确认，公开访问仍未确认。GitHub 与 Notion 用于上传与展示项目，Cloudflare 由用户自行处理，不在作品页编写部署教程。
-3. 本轮基础回归涵盖 Hero、中英文切换、三种尺寸的标题与溢出、图片、表单标签、菜单 Escape 和工艺 04 下滚；全流程键盘、3D 失败重试及后台暂停恢复仍需专项验收。
-4. 用户准备域名和 Cloudflare 后发布 pages.dev 预览；更新两个域名字段，再绑定正式域名。
-5. 真机、海外网络、GPU/帧率和实际邮箱/附件发送完成上线验收。
+3. 继续手机端适配，并通过真机检查布局与交互；保留手机静态背景、桌面加载 3D 的当前方案。
+4. 此前基础回归涵盖 Hero、中英文切换、三种尺寸的标题与溢出、图片、表单标签、菜单 Escape 和工艺 04 下滚；全流程键盘、3D 失败重试及后台暂停恢复仍需专项验收。
+5. 补充真机、海外网络、GPU/帧率和实际邮箱/附件发送验收；本次文档更新未重新运行这些检查。
 
 ## 协作原则
 
