@@ -89,7 +89,7 @@ curl -sS https://yituhardware.com/this-page-does-not-exist
 
 检查返回页面内容，并按需抽查当前构建产生的 JS、CSS 和字体资源。此前 HTTP、www 跳转链及 404 已验证；本次文档更新没有重新部署或重新执行线上验收。
 
-手机端首页目前使用 `hero-mobile.webp` 静态背景，3D 只在桌面端加载。手机端适配是下一项待办；真机、海外网络、实际邮件发送及 Spline 性能仍需继续验收。
+手机端与桌面一致加载 3D；开启减少动态效果或加载失败时显示静态图 `hero-mobile.webp`。真机、海外网络、实际邮件发送及 Spline 性能仍需继续验收。
 
 ## 回滚
 

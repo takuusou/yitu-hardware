@@ -9,7 +9,7 @@ import { LangText } from '@/components/ui/LangText'
 
 const SPLINE_SCENE_URL = 'https://prod.spline.design/d0dVBGtxNJWHD7g1/scene.splinecode'
 
-// Lazy-loaded only on desktop — mobile never downloads this 615KB chunk
+// Lazy-loaded on desktop and mobile unless reduced motion is requested.
 const SplineComponent = dynamic(() => import('@splinetool/react-spline'), {
   ssr: false,
   loading: () => <HeroSceneFallback />,
@@ -121,14 +121,14 @@ function canCreateWebGLContext() {
 
 function HeroSplineScene({ onApp }: { onApp: (app: SplineApp | null) => void }) {
   const { lang } = useLang()
-  // 'init' → shows fallback during SSR; useEffect resolves to 'mobile' | 'spline' | 'fallback'
+  // 'init' shows the SSR background; 'mobile' is the static reduced-motion view on any screen.
   const [status, setStatus] = useState<'init' | 'mobile' | 'spline' | 'fallback'>('init')
   // 3D 场景是否已就绪 —— 控制淡入 + "加载中" 指示
   const [loaded, setLoaded] = useState(false)
   const [attempt, setAttempt] = useState(0)
 
   useEffect(() => {
-    const staticView = window.matchMedia('(max-width: 768px), (prefers-reduced-motion: reduce)')
+    const staticView = window.matchMedia('(prefers-reduced-motion: reduce)')
     const update = () => {
       onApp(null)
       setLoaded(false)
@@ -293,6 +293,12 @@ export default function HeroSection() {
       touchIntent = null
     }
 
+    const onTouchEnd = (event: TouchEvent) => {
+      // Spline cancels touchend unconditionally, even after native scrolling makes it non-cancelable.
+      if (!event.cancelable) event.stopPropagation()
+      resetTouchIntent()
+    }
+
     const onTouchStart = (event: TouchEvent) => {
       if (event.touches.length !== 1) {
         resetTouchIntent()
@@ -331,14 +337,14 @@ export default function HeroSection() {
       capture: true,
       passive: false,
     })
-    wrapper.addEventListener('touchend', resetTouchIntent, { capture: true })
+    wrapper.addEventListener('touchend', onTouchEnd, { capture: true })
     wrapper.addEventListener('touchcancel', resetTouchIntent, { capture: true })
 
     return () => {
       wrapper.removeEventListener('wheel', stopSplineWheel, { capture: true })
       wrapper.removeEventListener('touchstart', onTouchStart, { capture: true })
       wrapper.removeEventListener('touchmove', stopSplinePinchOrVerticalPan, { capture: true })
-      wrapper.removeEventListener('touchend', resetTouchIntent, { capture: true })
+      wrapper.removeEventListener('touchend', onTouchEnd, { capture: true })
       wrapper.removeEventListener('touchcancel', resetTouchIntent, { capture: true })
     }
   }, [])
@@ -355,7 +361,7 @@ export default function HeroSection() {
         background: '#08090A',
       }}
     >
-      {/* Background: Spline 3D (desktop) or static image (mobile) */}
+      {/* Background: Spline 3D on all screens, with reduced-motion and failure fallbacks. */}
       <div
         className="hero-spline-bg"
         ref={splineWrapperRef}
