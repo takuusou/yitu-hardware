@@ -4,22 +4,91 @@ import { useEffect, useRef } from 'react'
 import { useLang } from '@/hooks/useLang'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { Draggable } from 'gsap/Draggable'
+import { InertiaPlugin } from 'gsap/InertiaPlugin'
 
-gsap.registerPlugin(ScrollTrigger)
+gsap.registerPlugin(ScrollTrigger, Draggable, InertiaPlugin)
+
+const SECONDS_PER_IMAGE = 2
+const PHOTO_HEIGHT = 190
+const PHOTO_GAP = 8
 
 const IMGS = [
-  { id: 'p5', src: '/p5.webp', w: '33%', x: { left: '-1%'  } },
-  { id: 'p3', src: '/p3.webp', w: '21%', x: { right: '2%'  } },
-  { id: 'p1', src: '/p1.webp', w: '27%', x: { left: '4%'   } },
-  { id: 'p4', src: '/p4.webp', w: '24%', x: { right: '6%'  } },
-  { id: 'p6', src: '/p6.webp', w: '26%', x: { left: '25%'  } },
-  { id: 'p2', src: '/p2.webp', w: '22%', x: { right: '1%'  } },
-  { id: 'p7', src: '/p7.webp', w: '18%', x: { left: '8%'   } },
-  { id: 'p8', src: '/p8.webp', w: '17%', x: { right: '20%' } },
-  { id: 'p9', src: '/p9.webp', w: '23%', x: { left: '38%'  } },
+  { id: 'p5', src: '/p5.webp', width: 1400, height: 788, w: '33%', x: { left: '-1%'  } },
+  { id: 'p3', src: '/p3.webp', width: 1400, height: 933, w: '21%', x: { right: '2%'  } },
+  { id: 'p1', src: '/p1.webp', width: 1400, height: 788, w: '27%', x: { left: '4%'   } },
+  { id: 'p4', src: '/p4.webp', width: 1400, height: 788, w: '24%', x: { right: '6%'  } },
+  { id: 'p6', src: '/p6.webp', width: 1400, height: 788, w: '26%', x: { left: '25%'  } },
+  { id: 'p2', src: '/p2.webp', width: 1400, height: 788, w: '22%', x: { right: '1%'  } },
+  { id: 'p7', src: '/p7.webp', width: 1400, height: 788, w: '18%', x: { left: '8%'   } },
+  { id: 'p8', src: '/p8.webp', width: 1400, height: 788, w: '17%', x: { right: '20%' } },
+  { id: 'p9', src: '/p9.webp', width: 1400, height: 788, w: '23%', x: { left: '38%'  } },
 ]
 
 const ORDER = ['p5','p3','p1','p4','p6','p2','p7','p8','p9']
+
+// Adapted from GSAP's draggable horizontalLoop helper; navigation/snapping are not needed here.
+// https://gsap.com/docs/v3/HelperFunctions/helpers/seamlessLoop/
+function horizontalLoop(items: HTMLImageElement[], config: { speed: number; onRest: () => void }) {
+  const timeline = gsap.timeline({ paused: true, repeat: -1, defaults: { ease: 'none' } })
+  const proxy = document.createElement('div')
+  const wrap = gsap.utils.wrap(0, 1)
+  let totalWidth = 0
+  let startProgress = 0
+  let ratio = 0
+
+  const refresh = () => {
+    const progress = timeline.progress()
+    timeline.progress(0, true).clear()
+    gsap.set(items, { x: 0, xPercent: 0 })
+    const firstLeft = items[0].getBoundingClientRect().left
+    const widths = items.map(item => item.getBoundingClientRect().width)
+    const starts = items.map(item => item.getBoundingClientRect().left - firstLeft)
+    totalWidth = starts[items.length - 1] + widths[items.length - 1] + PHOTO_GAP
+    const pixelsPerSecond = config.speed * 100
+
+    items.forEach((item, index) => {
+      const distanceToLoop = starts[index] + widths[index]
+      timeline.to(item, {
+        xPercent: -distanceToLoop / widths[index] * 100,
+        duration: distanceToLoop / pixelsPerSecond,
+      }, 0).fromTo(item, {
+        xPercent: (totalWidth - distanceToLoop) / widths[index] * 100,
+      }, {
+        xPercent: 0,
+        duration: (totalWidth - distanceToLoop) / pixelsPerSecond,
+        immediateRender: false,
+      }, distanceToLoop / pixelsPerSecond)
+    })
+    timeline.progress(1, true).progress(progress, true)
+  }
+
+  refresh()
+  const align = () => timeline.progress(wrap(startProgress + (draggable.startX - draggable.x) * ratio))
+  const draggable = Draggable.create(proxy, {
+    trigger: items[0].parentElement,
+    type: 'x',
+    inertia: true,
+    minDuration: 0.2,
+    maxDuration: 1.2,
+    overshootTolerance: 0,
+    onPressInit() {
+      gsap.killTweensOf(timeline)
+      timeline.pause()
+      startProgress = timeline.progress()
+      ratio = 1 / totalWidth
+      gsap.set(proxy, { x: -startProgress / ratio })
+    },
+    onDrag: align,
+    onThrowUpdate: align,
+    onRelease() {
+      if (!this.isThrowing) config.onRest()
+    },
+    onThrowComplete: config.onRest,
+  })[0]
+
+  return { timeline, draggable, refresh }
+}
 
 export default function AboutIntroSection() {
   const { lang } = useLang()
@@ -31,27 +100,76 @@ export default function AboutIntroSection() {
 
     const media = gsap.matchMedia()
     media.add('(max-width: 768px), (prefers-reduced-motion: reduce)', () => {
-      // Mobile: show sub + cta immediately, trigger photo fade when section enters view
+      // Keep the existing immediate text/CTA presentation on mobile and reduced motion.
       const aiSub = document.getElementById('ai-sub')
       if (aiSub) aiSub.style.opacity = '1'
       const aiCta = document.getElementById('ai-cta')
       if (aiCta) aiCta.style.opacity = '1'
 
-      const io = new IntersectionObserver(
-        (entries) => {
-          if (entries[0].isIntersecting) {
-            section.classList.add('ai-mobile-in')
-            io.disconnect()
-          }
-        },
-        { threshold: 0.15 }
-      )
-      io.observe(section)
       return () => {
-        io.disconnect()
-        section.classList.remove('ai-mobile-in')
         if (aiSub) aiSub.style.opacity = ''
         if (aiCta) aiCta.style.opacity = ''
+      }
+    })
+
+    media.add('(max-width: 768px)', () => {
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
+      const track = section.querySelector<HTMLElement>('.ai-mobile-marquee')!
+      const items = Array.from(track.querySelectorAll('img'))
+      const averageStep = items.reduce((sum, item) => sum + PHOTO_HEIGHT * Number(item.getAttribute('width')) / Number(item.getAttribute('height')) + PHOTO_GAP, 0) / items.length
+      let inViewport = false
+      const canMove = () => inViewport && !document.hidden
+      const resume = () => {
+        if (!canMove() || reducedMotion.matches || loop.draggable.isPressed || loop.draggable.isThrowing) return
+        gsap.killTweensOf(loop.timeline)
+        loop.timeline.timeScale(0).play()
+        gsap.to(loop.timeline, { timeScale: 1, duration: 0.6, ease: 'power2.out', overwrite: true })
+      }
+      const loop = horizontalLoop(items, { speed: averageStep / SECONDS_PER_IMAGE / 100, onRest: resume })
+      const updateVisibility = () => {
+        if (!canMove()) {
+          gsap.killTweensOf(loop.timeline)
+          loop.timeline.pause()
+          if (loop.draggable.isPressed) loop.draggable.endDrag(loop.draggable.pointerEvent)
+          loop.draggable.tween?.pause()
+        } else if (loop.draggable.isThrowing) {
+          loop.draggable.tween?.resume()
+        } else {
+          resume()
+        }
+      }
+      const observer = new IntersectionObserver(([entry]) => {
+        inViewport = entry.isIntersecting && entry.intersectionRatio > 0
+        updateVisibility()
+      }, { threshold: 0.001 })
+      const onResize = () => {
+        if (loop.draggable.isPressed) loop.draggable.endDrag(loop.draggable.pointerEvent)
+        loop.draggable.tween?.kill()
+        gsap.killTweensOf(loop.timeline)
+        loop.timeline.pause()
+        loop.refresh()
+        loop.draggable.update()
+        resume()
+      }
+      const onMotionChange = () => {
+        loop.draggable.tween?.kill()
+        gsap.killTweensOf(loop.timeline)
+        loop.timeline.pause()
+        if (!reducedMotion.matches) updateVisibility()
+      }
+      observer.observe(section)
+      document.addEventListener('visibilitychange', updateVisibility)
+      window.addEventListener('resize', onResize)
+      reducedMotion.addEventListener('change', onMotionChange)
+      return () => {
+        observer.disconnect()
+        document.removeEventListener('visibilitychange', updateVisibility)
+        window.removeEventListener('resize', onResize)
+        reducedMotion.removeEventListener('change', onMotionChange)
+        loop.draggable.tween?.kill()
+        loop.draggable.kill()
+        gsap.killTweensOf(loop.timeline)
+        loop.timeline.kill()
       }
     })
 
@@ -174,7 +292,7 @@ export default function AboutIntroSection() {
         </div>
       ))}
 
-      {/* Center text + mobile photo grid */}
+      {/* Center text + independent mobile photo marquee */}
       <div
         className="ai-text-center"
         style={{ position: 'relative', zIndex: 10, textAlign: 'center', padding: '0 40px' }}
@@ -214,12 +332,13 @@ export default function AboutIntroSection() {
           {lang === 'zh' ? '从 2016 年至今的努力' : 'Our commitment since 2016'}
         </p>
 
-        {/* Mobile-only: 2 photos displayed between sub and CTA */}
-        <div className="ai-mobile-photos" aria-hidden="true">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/p5.webp" alt="" loading="lazy" />
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/p1.webp" alt="" loading="lazy" />
+        {/* Independent mobile images keep the desktop flying-photo DOM untouched. */}
+        <div className="ai-mobile-marquee" aria-hidden="true">
+          {IMGS.map(img => (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img key={img.id} src={img.src} alt="" width={img.width} height={img.height}
+              loading="lazy" draggable={false} />
+          ))}
         </div>
 
         <div id="ai-cta" style={{ display: 'flex', justifyContent: 'center', opacity: 0 }}>
@@ -266,8 +385,8 @@ export default function AboutIntroSection() {
           box-shadow: inset 0 1px 0 rgba(255,255,255,0.25), 0 8px 32px rgba(0,0,0,0.28) !important;
         }
 
-        /* Mobile-only photo grid: hidden on desktop */
-        .ai-mobile-photos { display: none; }
+        /* Mobile-only marquee: hidden on desktop. */
+        .ai-mobile-marquee { display: none; }
 
         @media (max-width: 768px) {
           /* Section: natural height, vertically centered column */
@@ -302,32 +421,24 @@ export default function AboutIntroSection() {
             margin: 0 0 24px !important;
           }
 
-          /* Mobile photo grid: 2 images side by side */
-          .ai-mobile-photos {
-            display: grid !important;
-            grid-template-columns: 1fr 1fr !important;
-            gap: 6px !important;
-            margin: 0 0 28px !important;
-            height: 170px !important;
-            opacity: 0;
-            transform: translateY(14px);
-            transition: opacity 0.65s ease, transform 0.65s ease;
+          /* Keep the former 170px layout slot while displaying 190px photos. */
+          .ai-mobile-marquee {
+            display: flex;
+            gap: 8px;
+            width: calc(100% + 48px);
+            height: 190px;
+            margin: -10px -24px 18px;
+            overflow: hidden;
+            touch-action: pan-y;
           }
-          .ai-mobile-photos img {
-            width: 100% !important;
-            height: 100% !important;
-            object-fit: cover !important;
-            object-position: center !important;
-            display: block !important;
-          }
-          .ai-mobile-photos img:nth-child(2) {
-            transition-delay: 0.1s;
-          }
-
-          /* IntersectionObserver adds this class to trigger fade-in */
-          #about-intro.ai-mobile-in .ai-mobile-photos {
-            opacity: 1 !important;
-            transform: translateY(0) !important;
+          .ai-mobile-marquee img {
+            flex: none;
+            height: 190px;
+            width: auto;
+            max-width: none;
+            display: block;
+            user-select: none;
+            touch-action: pan-y;
           }
 
           /* CTA */

@@ -49,6 +49,7 @@ Node.js 22；npm ci、npm run dev。发布检查为 npm run lint、npm run build
 
 ## 2026-10-17 至 2026-10-18 进展
 
+- 手机端「一件事 深入做」区块改为无缝循环图片带。
 - 从已停用的阿里云服务器部署方式迁移到 Cloudflare Workers 静态资源托管，正式网址于 2026-10-17 上线；主域名通过 Worker custom domain 绑定。
 - DNS 由 Cloudflare 托管。已开启 Always Use HTTPS，www 通过 Cloudflare 重定向规则以 301 跳转到 HTTPS 主域名，并保留路径和查询参数；workers.dev 预览地址已关闭。
 - 域名注册商从阿里云转移到 Cloudflare Registrar，于 2026-10-17 提交，预计 2026-10-22 至 2026-10-24 完成，目前仍待确认。
