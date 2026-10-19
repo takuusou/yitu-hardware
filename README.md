@@ -5,7 +5,7 @@ A bilingual website for a precision CNC machining business, combining industrial
 面向海外客户的中英文精密制造企业网站。项目围绕精密 CNC 加工业务，将行业应用、加工工艺、企业能力、合作保障与联系询价组织为完整的单页体验。
 <img width="2994" height="1506" alt="48052910-3676-4b8b-b4bf-a497a559255d" src="https://github.com/user-attachments/assets/6f29406a-edce-4702-8454-9b886c3eec6a" />
 
-正式网址：[https://yituhardware.com](https://yituhardware.com)，于 2026-10-17 上线。
+正式网址：[https://yituhardware.com](https://yituhardware.com)，于 2026-05-01 上线。
 
 ## 项目目标
 
