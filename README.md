@@ -45,7 +45,7 @@ A bilingual website for a precision CNC machining business, combining industrial
 
 作者主导业务需求、内容取舍与视觉方向，与 AI 协作完成前端实现、动画调整、响应式适配和问题排查。项目经验包括将业务语言转化为页面要求、根据观看反馈调整动画，以及结合实际内容检查中英文和移动端表现。
 
-[完整项目介绍与经验 · Notion](https://app.notion.com/p/3f915452b84481d981b8d39ed184faa1?pvs=204)
+[完整项目介绍与经验 · Notion](https://wide-nest-95c.notion.site/YITU-Hardware-3f915452b84481d981b8d39ed184faa1?pvs=73)
 
 ## 技术
 
