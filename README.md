@@ -64,18 +64,4 @@ npm run dev
 
 检查命令：`npm run lint`、`npm run build`、`npm run typecheck`。静态构建输出为 `out/`。
 
-## 部署
-
-网站通过 Cloudflare Workers 静态资源托管，配置见 `wrangler.jsonc`。完成 Wrangler 登录并确认部署账号后，执行 `npm run deploy`，该命令先构建，再发布 `out/`。
-
-主域名通过 Worker custom domain 绑定；`www.yituhardware.com` 以 301 跳转到主域名并保留路径和查询参数。已开启 Always Use HTTPS，workers.dev 预览地址已关闭。DNS 由 Cloudflare 托管；原阿里云服务器（Nginx + PM2）已停用，原部署方式作废。
-
-完整操作、验证和回滚方法见 [部署手册](DEPLOYMENT.md)。
-
-## 项目状态
-
-网站已正式上线。此前完成桌面、375px 和 768px 基础浏览器检查，以及 lint、类型检查、构建和从 GitHub 全新克隆后的安装与构建检查；手机端与桌面一致加载 3D；开启减少动态效果或加载失败时显示静态图，已通过用户实体手机检查（2026-10-19），其他使用环境仍需进一步验收。
-
-域名注册商转移于 2026-10-17 从阿里云提交至 Cloudflare Registrar，已于 2026-10-19 完成。2026-10-18 已将 GitHub 原有文档历史合并进 main，合并提交为 `bdf56f9`。手机端与桌面一致加载 3D；开启减少动态效果或加载失败时显示静态图。
-
 品牌、企业文案及第三方素材的权利归相应权利人所有。第三方依赖、字体与资源遵循各自许可；仓库尚未设置项目整体的开源许可证。
