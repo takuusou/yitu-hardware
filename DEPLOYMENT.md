@@ -50,7 +50,7 @@ npm run deploy
 - `www.yituhardware.com` 通过 Cloudflare 重定向规则以 301 跳转到 `https://yituhardware.com`，保留原路径和查询参数。
 - 已开启 Always Use HTTPS，HTTP 访问跳转到 HTTPS。
 - `workers_dev` 为 `false`，workers.dev 预览地址已关闭。
-- DNS 由 Cloudflare 托管。域名注册商正从阿里云转移至 Cloudflare Registrar，2026-10-17 提交，预计 2026-10-22 至 2026-10-24 完成；尚需确认转移结果。
+- DNS 由 Cloudflare 托管。域名注册商从阿里云转移至 Cloudflare Registrar，2026-10-17 提交，已于 2026-10-19 完成。
 
 当前部署使用已存在的域名绑定和区域规则，日常发布无需重新创建 DNS 或重定向规则。
 
